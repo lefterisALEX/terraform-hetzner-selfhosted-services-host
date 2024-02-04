@@ -1,0 +1,3 @@
+hcloud_token        = "token_value"
+infisical_token     = "your infisical service token"
+tailscale_auth_key  = "your tailscale auth key"

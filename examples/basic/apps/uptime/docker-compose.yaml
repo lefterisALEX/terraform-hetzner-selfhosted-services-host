@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1.23.10
+    container_name: uptime-kuma
+    networks:
+      private_network:
+        ipv4_address: 172.29.1.29
+    volumes:
+      - /mnt/data/uptime-kuma/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always

@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  adguard:
+    container_name: adguard
+    hostname: adguard
+    image: adguard/adguardhome:v0.107.43
+    restart: unless-stopped
+    networks:
+      private_network:
+        ipv4_address: 172.29.1.24
+    volumes:
+      - /mnt/data/adguard-home/work:/opt/adguardhome/work
+      - /mnt/data/adguard-home/conf:/opt/adguardhome/conf

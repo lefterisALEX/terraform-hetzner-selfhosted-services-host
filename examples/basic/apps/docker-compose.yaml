@@ -1,0 +1,11 @@
+version: "3"
+include:
+  - ./uptime/docker-compose.yaml
+  - ./adguard/docker-compose.yaml
+networks:
+  private_network:
+    name: private_network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.29.1.0/24
