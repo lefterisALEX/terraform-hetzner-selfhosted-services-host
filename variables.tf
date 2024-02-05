@@ -1,7 +1,7 @@
-variable "hcloud_token" {
-  sensitive   = true
-  description = "(Required) The API key for your hetzner project."
-}
+# variable "hcloud_token" {
+#   sensitive   = true
+#   description = "(Required) The API key for your hetzner project."
+# }
 
 variable "name" {
   default     = "server"
