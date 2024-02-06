@@ -3,23 +3,38 @@
 Create an instance in your Hetzner project that you can access with a provided SSH key.
 The instance will run your docker compose files under apps directory.
 
-## Requirements
+## Requirments
 1. **Generate an API Token for your Hetzner project.**  
 This will allow terraform to deploy resources in your hetzner project.  
 *more info: https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/*  
-2. **Create an Auth-Key in your taisclale account**  
+2. **(Optional) Create an Auth-Key in your taisclale account**  
 This will be used to join the server in your tailscale network.   
 *more info: https://tailscale.com/kb/1085/auth-keys#generating-a-key*  
-3. **Create a service token in your infisical project.**  
+3. **(Optional)Create a service token in your infisical project.**  
 This will be used to get secrets from your infisical project.  
-When you create the token you need to set:  
-Environment : Production  
-Path : **  
-Permissions: Read  
+When you create the token you need to set as below:  
+![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/de485df8-245e-4052-a469-5c9cb0c9631e)
 
-Note: The structure of the directories in infisical should match the structure of directories in the `apps` directory.   
-The infisical will inject a file called `.secret` in the apps directory. This need to be defined in the docker compose.  
 *more info:  https://infisical.com/docs/internals/service-tokens* 
+
+
+**How to inject secrets from infisical**  
+The structure of the directories in infisical project should match the structure of directories in the `apps` directory.   
+Let's say you want to inject the secret `DB_PASSWORD`  as environment variable for the app `immich`.
+
+1.Under `immich` directory create the key `DB_PASSWORD` with the value you want to inject to the app
+![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/be99c504-ac31-4dfd-8df1-9fe8cfcad435)
+![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/815efc22-e400-4a43-a091-bce4398eea05)
+
+2.  `Update docker-compose.yaml` to pass the content of the `.secrets` file as environment variables.
+
+![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/168247b7-944f-4b12-8918-625fa7644d43)
+
+Note:  What will happened is when you run terraform apply infisical ig going to read all secrets under each infisical project and export it under each directory with same name to a file called `.secrets`
+For example if you have under apps three directories, `immich`, `traefik` and `photoprism` the module is going to generate for each directory a file called `.secrets`  
+
+![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/c22e4d31-0239-4a28-b83a-ec8d722b4649)
+
 
 ## Providers
 
