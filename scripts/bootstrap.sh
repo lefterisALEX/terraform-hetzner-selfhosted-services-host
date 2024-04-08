@@ -30,8 +30,9 @@ runcmd:
 - apt-get update
 - apt-get install -y infisical
 
-# install rclone
+# install extra-tools
 - curl https://rclone.org/install.sh | bash
+- apt-get install -y cifs-utils
 
 # setup ufw
 - ufw allow OpenSSH
