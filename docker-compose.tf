@@ -71,11 +71,11 @@ resource "null_resource" "docker-secrets" {
 
   provisioner "remote-exec" {
     inline = [
-      "export INFISICAL_TOKEN=${var.infisical_token}",
+      "export INFISICAL_TOKEN=$(infisical login --method=universal-auth --client-id=${var.infisical_client_id} --client-secret=${var.infisical_client_secret} --plain --silent)",
       "for app_dir in /root/apps/*; do",
       "  if [ -d \"$app_dir\" ]; then",
       "    app_name=$(basename \"$app_dir\")",
-      "    infisical export --env=prod --path=\"/$app_name\" > \"$app_dir/.secrets\"",
+      "    infisical export --env=prod --path=\"/$app_name\" --projectId=${var.infisical_project_id} > \"$app_dir/.secrets\"",
       "  fi",
       "done",
     ]

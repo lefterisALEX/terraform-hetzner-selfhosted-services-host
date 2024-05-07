@@ -89,13 +89,26 @@ variable "post_init_commands" {
   description = "A set of commands to be executed everytime terraform runs."
 }
 
-variable "infisical_token" {
+variable "infisical_client_id" {
   type        = string
   sensitive   = true
-  default     = "st-xxx-xx"
-  description = "An access token from your infisical project."
+  default     = "xxx-xx"
+  description = "The infisical client id."
 }
 
+variable "infisical_client_secret" {
+  type        = string
+  sensitive   = true
+  default     = "xxx-xx"
+  description = "The infisical client secret."
+}
+
+variable "infisical_project_id" {
+  type        = string
+  sensitive   = true
+  default     = "xxx-xx"
+  description = "The infisical project ID."
+}
 variable "enable_infisical" {
   type        = bool
   default     = false
