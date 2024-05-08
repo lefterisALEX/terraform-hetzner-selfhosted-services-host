@@ -16,6 +16,15 @@ variable "infisical_token" {
   default   = "st-xxx-xxx"
   sensitive = true
 }
+variable "infisical_client_id" {
+  default   = "st-xxx-xxx"
+}
+variable "infisical_client_secret" {
+  default   = "st-xxx-xxx"
+}
+variable "infisical_project_id" {
+  default   = "st-xxx-xxx"
+}
 
 
 module "server" {
@@ -33,7 +42,9 @@ module "server" {
   volume_delete_protection = false
   tailscale_auth_key       = var.tailscale_auth_key
   enable_infisical         = true
-  infisical_token          = var.infisical_token
+  infisical_client_id      = var.infisical_client_id
+  infisical_client_secret  = var.infisical_client_secret
+  infisical_project_id     = var.infisical_project_id 
 
   timezone         = "Europe/Amsterdam"
   ssh_keys         = ["main"]
