@@ -12,18 +12,17 @@ provider "hcloud" {
 
 variable "hcloud_token" {}
 variable "tailscale_auth_key" {}
-variable "infisical_token" {
-  default   = "st-xxx-xxx"
+variable "infisical_client_id" {
+  default   = "xxx-xxx"
   sensitive = true
 }
-variable "infisical_client_id" {
-  default   = "st-xxx-xxx"
-}
 variable "infisical_client_secret" {
-  default   = "st-xxx-xxx"
+  default   = "xxx-xxx"
+  sensitive = true
 }
 variable "infisical_project_id" {
-  default   = "st-xxx-xxx"
+  default   = "xxx-xxx"
+  sensitive = true
 }
 
 
