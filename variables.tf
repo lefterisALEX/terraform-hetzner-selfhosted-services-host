@@ -91,21 +91,21 @@ variable "post_init_commands" {
 
 variable "infisical_client_id" {
   type        = string
-  sensitive   = true
+  #sensitive   = true
   default     = "xxx-xx"
   description = "The infisical client id."
 }
 
 variable "infisical_client_secret" {
   type        = string
-  sensitive   = true
+  #sensitive   = true
   default     = "xxx-xx"
   description = "The infisical client secret."
 }
 
 variable "infisical_project_id" {
   type        = string
-  sensitive   = true
+  #sensitive   = true
   default     = "xxx-xx"
   description = "The infisical project ID."
 }
