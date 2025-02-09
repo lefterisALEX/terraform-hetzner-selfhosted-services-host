@@ -49,6 +49,11 @@ variable "server_ip" {
   description = "The IP of the interface which will be attached to your server."
 }
 
+variable "root_disk_size" {
+  type        = number
+  default     = 80
+  description = "The size of the main disk in GB for the instance."
+}
 variable "volume_size" {
   default     = "15"
   description = "The size of the volume which will be attached to the server"

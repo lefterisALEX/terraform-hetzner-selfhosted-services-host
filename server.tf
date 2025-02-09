@@ -4,6 +4,7 @@ resource "hcloud_server" "this" {
   image        = var.image
   server_type  = var.server_type
   location     = var.region
+  primary_disk_size = var.root_disk_size
   firewall_ids = var.public_access ? [] : [hcloud_firewall.this[0].id]
   ssh_keys     = concat(var.ssh_keys, ["server"])
 
