@@ -4,15 +4,21 @@ resource "hcloud_server" "this" {
   image        = var.image
   server_type  = var.server_type
   location     = var.region
-  primary_disk_size = var.root_disk_size
   firewall_ids = var.public_access ? [] : [hcloud_firewall.this[0].id]
-  ssh_keys     = concat(var.ssh_keys, ["server"])
+  ssh_keys     = concat(var.ssh_keys)
 
   user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
-    tailscale_auth_key = var.tailscale_auth_key,
-    linux_device       = hcloud_volume.this.linux_device
-    tailscale_routes   = var.tailscale_routes
-    timezone           = var.timezone
+    tailscale_auth_key      = var.tailscale_auth_key,
+    linux_device            = hcloud_volume.this.linux_device
+    tailscale_routes        = var.tailscale_routes
+    timezone                = var.timezone
+    apps_repository_url     = format("https://%s@%s", var.github_token, replace(var.github_repo_url, "https://", ""))
+    apps_directory          = var.apps_directory
+    infisical_client_id     = var.infisical_client_id
+    infisical_client_secret = var.infisical_client_secret
+    infisical_project_id    = var.infisical_project_id
+    infisical_api_url       = var.infisical_api_url 
+    custom_userdata         = var.custom_userdata
   })
 
   lifecycle {
@@ -22,13 +28,9 @@ resource "hcloud_server" "this" {
   }
 
   network {
-    network_id = hcloud_network.this.id
+    network_id = var.hcloud_network_id
     ip         = var.server_ip
   }
-
-  depends_on = [
-    hcloud_network_subnet.this
-  ]
 
   public_net {
     ipv6_enabled = false
@@ -52,41 +54,3 @@ resource "hcloud_volume_attachment" "this" {
 }
 
 
-resource "null_resource" "post-init" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  connection {
-    type        = "ssh"
-    host        = var.server_ip
-    user        = "root"
-    private_key = tls_private_key.this.private_key_openssh
-  }
-
-  provisioner "remote-exec" {
-    inline = var.post_init_commands
-  }
-
-  depends_on = [
-    hcloud_server.this,
-  ]
-}
-
-
-# This is the key used by the runner to connect to the server.
-resource "local_file" "ssh_private_key" {
-
-  content         = tls_private_key.this.private_key_openssh
-  filename        = "${path.root}/server.pem"
-  file_permission = "0600"
-}
-
-resource "tls_private_key" "this" {
-  algorithm = "RSA"
-}
-
-resource "hcloud_ssh_key" "this" {
-  name       = "server"
-  public_key = tls_private_key.this.public_key_openssh
-}
