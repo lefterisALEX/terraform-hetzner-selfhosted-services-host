@@ -29,9 +29,9 @@ variable "ip_range" {
   description = "The IP range of the network."
 }
 
-variable "network_zone" {
-  default     = "eu-central"
-  description = "The zone where network resources will be created."
+variable "hcloud_network_id" {
+  type = number
+  description = "The network ID from your private network"
 }
 
 variable "image" {
@@ -88,34 +88,61 @@ variable "public_access" {
   description = "If false a firewall that block all public access will be attached to the server."
 }
 
-variable "post_init_commands" {
-  type        = list(string)
-  default     = []
-  description = "A set of commands to be executed everytime terraform runs."
-}
-
 variable "infisical_client_id" {
   type        = string
   sensitive   = true
-  default     = "xxx-xx"
+  default     = ""
   description = "The infisical client id."
 }
 
 variable "infisical_client_secret" {
   type        = string
   sensitive   = true
-  default     = "xxx-xx"
+  default     = ""
   description = "The infisical client secret."
 }
 
 variable "infisical_project_id" {
   type        = string
   sensitive   = true
-  default     = "xxx-xx"
+  default     = ""
   description = "The infisical project ID."
 }
+
+variable "infisical_api_url" {
+  type        = string
+  default     = null
+  description = "The infisical api URL. This value will be exported to INFISICAL_API_URL if set"
+}
+
 variable "enable_infisical" {
   type        = bool
   default     = false
   description = "Set to true to enable accessing secrets from infisical."
+}
+
+variable "github_token" {
+  type        = string
+  sensitive   = true
+  default     = ""
+  description = "The GitHub token for accessing private repositories."
+}
+
+variable "github_repo_url" {
+  type        = string
+  default     = ""
+  description = "The URL of the applications repository."
+}
+
+variable "apps_directory" {
+  type        = string
+  default     = "examples/basic/apps"
+  description = "The local directory where the applications repository will be cloned."
+}
+variable "custom_userdata" {
+  description = "Extra commands to be executed in cloud-init"
+  type        = list(string)
+  default     = [
+    "echo 'Default user-data execution'"
+  ]
 }
