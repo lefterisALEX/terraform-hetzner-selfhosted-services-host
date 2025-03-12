@@ -137,7 +137,7 @@ variable "github_repo_url" {
 variable "apps_directory" {
   type        = string
   default     = "examples/basic/apps"
-  description = "The local directory where the applications repository will be cloned."
+  description = "The relative path in your repo where docker compose file is."
 }
 variable "custom_userdata" {
   description = "Extra commands to be executed in cloud-init"
