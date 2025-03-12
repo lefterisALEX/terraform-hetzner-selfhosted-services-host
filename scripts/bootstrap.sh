@@ -153,7 +153,7 @@ runcmd:
   # Clone apps repo 
   - git clone ${apps_repository_url} /root/deployr
   # Get all secret
-  - sh /usr/local/bin/deployr-infisical-sync.sh
+  - sh /usr/local/bin/deployr.sh
   # start containers
   - docker-compose -f /root/deployr/${apps_directory}/docker-compose.yaml up -d
   # User-provided custom runcmd commands
