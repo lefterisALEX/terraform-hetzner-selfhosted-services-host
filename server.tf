@@ -1,3 +1,8 @@
+
+locals {
+  deployr_version = "0.1"
+}
+
 resource "hcloud_server" "this" {
 
   name         = var.name
@@ -8,17 +13,18 @@ resource "hcloud_server" "this" {
   ssh_keys     = concat(var.ssh_keys)
 
   user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
-    tailscale_auth_key      = var.tailscale_auth_key,
+    tailscale_auth_key      = var.tailscale_auth_key
     linux_device            = hcloud_volume.this.linux_device
     tailscale_routes        = var.tailscale_routes
     timezone                = var.timezone
     apps_repository_url     = format("https://%s@%s", var.github_token, replace(var.github_repo_url, "https://", ""))
-    apps_directory          = var.apps_directory
+    docker_compose_path     = var.docker_compose_path
     infisical_client_id     = var.infisical_client_id
     infisical_client_secret = var.infisical_client_secret
     infisical_project_id    = var.infisical_project_id
-    infisical_api_url       = var.infisical_api_url 
+    infisical_api_url       = var.infisical_api_url
     custom_userdata         = var.custom_userdata
+    deployr_version         = local.deployr_version
   })
 
   lifecycle {

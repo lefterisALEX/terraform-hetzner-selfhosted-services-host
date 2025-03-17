@@ -100,9 +100,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_apps_directory"></a> [apps\_directory](#input\_apps\_directory) | The local directory where the applications repository will be cloned. | `string` | `"examples/basic/apps"` | no |
 | <a name="input_custom_userdata"></a> [custom\_userdata](#input\_custom\_userdata) | Extra commands to be executed in cloud-init | `list(string)` | <pre>[<br/>  "echo 'Default user-data execution'"<br/>]</pre> | no |
-| <a name="input_enable_infisical"></a> [enable\_infisical](#input\_enable\_infisical) | Set to true to enable accessing secrets from infisical. | `bool` | `false` | no |
+| <a name="input_docker_compose_path"></a> [docker\_compose\_path](#input\_docker\_compose\_path) | The relative path in your repo where docker compose file is. | `string` | `"examples/basic/apps"` | no |
 | <a name="input_github_repo_url"></a> [github\_repo\_url](#input\_github\_repo\_url) | The URL of the applications repository. | `string` | `""` | no |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | The GitHub token for accessing private repositories. | `string` | `""` | no |
 | <a name="input_hcloud_network_id"></a> [hcloud\_network\_id](#input\_hcloud\_network\_id) | The network ID from your private network | `number` | n/a | yes |
@@ -132,4 +131,5 @@ No modules.
 |------|-------------|
 | <a name="output_server_id"></a> [server\_id](#output\_server\_id) | n/a |
 | <a name="output_server_ip"></a> [server\_ip](#output\_server\_ip) | n/a |
+
 

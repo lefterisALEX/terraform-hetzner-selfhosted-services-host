@@ -115,12 +115,6 @@ variable "infisical_api_url" {
   description = "The infisical api URL. This value will be exported to INFISICAL_API_URL if set"
 }
 
-variable "enable_infisical" {
-  type        = bool
-  default     = false
-  description = "Set to true to enable accessing secrets from infisical."
-}
-
 variable "github_token" {
   type        = string
   sensitive   = true
@@ -134,7 +128,7 @@ variable "github_repo_url" {
   description = "The URL of the applications repository."
 }
 
-variable "apps_directory" {
+variable "docker_compose_path" {
   type        = string
   default     = "examples/basic/apps"
   description = "The relative path in your repo where docker compose file is."
