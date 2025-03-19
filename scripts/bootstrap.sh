@@ -57,7 +57,7 @@ runcmd:
   # Clone apps repo 
   - git clone ${apps_repository_url} /root/deployr
   # Get all secret
-  - sh /usr/local/bin/deployr.sh
+  - bash /usr/local/bin/deployr.sh
   # start containers
   - docker compose -f /root/deployr/"${docker_compose_path}"/docker-compose.yaml up -d
   # User-provided custom runcmd commands
