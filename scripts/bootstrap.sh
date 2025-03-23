@@ -22,6 +22,7 @@ write_files:
       PROJECT_ID="${infisical_project_id}"
       INFISICAL_API_URL="${infisical_api_url}"  
       DOCKER_COMPOSE_PATH="${docker_compose_path}"
+      SUBDIR_SECRETS_FILENAME=".secrets"
     permissions: '0644'
     owner: root:root
 
