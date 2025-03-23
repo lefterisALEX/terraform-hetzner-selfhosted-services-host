@@ -1,6 +1,6 @@
 
 locals {
-  deployr_version = "0.1"
+  deployr_version = "0.2"
 }
 
 resource "hcloud_server" "this" {
