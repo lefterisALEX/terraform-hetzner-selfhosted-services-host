@@ -1,6 +1,43 @@
-<!-- BEGIN_TF_DOCS -->
-## Information
-Create an instance in your Hetzner project that is accessible using a pre-provided SSH key. This instance will clone your repository containing the Docker Compose files into the `/root/deployr` directory.
+## Project Description
+
+This project automates the deployment and management of selfhosted applications on a Hetzner cloud instance. 
+It leverages Terraform to provision infrastructure, clones your code from a GitHub repository, manages secrets using Infisical, and utilizes Docker Compose for deploying your applications.
+The setup ensures that applications are kept up-to-date with the latest code changes from your upstream repository.
+
+## How it works
+
+This setup is designed to function as a modular Docker Compose configuration, featuring a primary `docker-compose.yaml` file that incorporates additional child `docker-compose.yaml` files.
+If Infisical integration is enabled:
+ - An `.env` file is generated in the parent directory, containing all the secrets from the parent directory of your Infisical project.
+ - A `.secret` file is created in each subdirectory, containing all the secrets from the directory with the same name as your Infisical project.
+```
+/
+│
+├── docker-compose.yaml           # Parent compose file
+├── .env                          # Environment variables for parent compose file
+│
+├── traefik/
+│   ├── docker-compose.yaml       # Child compose file
+│   └── .secret                   # Secret variables for traefik
+│
+├── immich/
+│   ├── docker-compose.yaml       # Child compose file
+│   └── .secret                   # Secret variables for immich
+│
+└── uptime/
+    ├── docker-compose.yaml       # Child compose file
+    └── .secret                   # Secret variables for uptime
+
+```
+
+1. Deploys an instance in your Hetzner project, accessible via a pre-configured SSH key.
+2. Clones your GitHub repository containing the `docker-compose` file(s).
+3. Retrieves secrets from your Infisical project and saves them in a `.env` file for the root `docker-compose` file.
+4. Retrieves secrets from your Infisical project and saves them in a `.secrets` file for each subdirectory in your repository.
+5. Executes the root `docker-compose.yaml` file.
+6. Regularly checks for new commits in the upstream repository. If new commits are found, it fetches the updated code and re-applies the `docker-compose.yaml`.
+
+
 
 ## Requirments
 1. **Generate an API Token for your Hetzner project.**  
@@ -15,32 +52,6 @@ For detailed instructions on setting up Infisical secrets, please refer to the "
 4. **(Optional) Create a GitHub Token**  
    This token is necessary if your application repository is private.
 
-## Version 2.x.x
-
-**!!!!BREAKING CHANGES!!!!**
-
-If you are migrating from version 1 to version 2 of this module, please note the following breaking changes:
-
-1. The private network is no longer managed by this module and must be created separately. In version 2, you only need to specify the network ID of the existing network. You can use this module to create the necessary network resources: [Private Network with NAT Gateway](https://registry.terraform.io/modules/lefterisALEX/private-network-with-nat-gateway/hetzner/latest).
-
-2. The `post_init` userdata are now called `custom_userdata` and are executed at the end of the bootstrap.
-
-ENHANCEMENTS
-
-1. The `apps` directory is now synced periodically from an upstream repository, rather than being copied during bootstrap.
-
-2. Infisical secrets are now synced periodically instead of being pulled only when Terraform runs.
-
-
-
-## Upgrade from v1.1.0
-
-1. **Backup Data**: Ensure you back up the data located at `/mnt/data`.
-2. **Enable Volume Delete Protection**: Activate `volume_delete_protection` to prevent accidental deletion of the volume where persistent data is stored.
-3. **Detach Private Network**: In the server settings, navigate to Networking > Private Network. Click the three dots and select "Detach" to disassociate the private network from the server.
-4. **Delete Old Network**: Go to the network tab and delete the old network.
-5. **Create New Network**: Use [this](https://registry.terraform.io/modules/lefterisALEX/private-network-with-nat-gateway/hetzner/latest) module to create a new network.
-6. **Update Network ID**: Use the new network ID as the input for `hcloud_network_id` in the v2 module. Adjust `server_ip` and `tailscale_routes` if needed.
 
 
 ## How to setup and inject secrets from infisical 
@@ -53,8 +64,6 @@ ENHANCEMENTS
 4. Click on Universal Auth, then click Add a `client secret`. Get the client secret and set it as `infisical_client_secret` 
 5. Get the client ID and set it as `infisical_client_id`.
 6. If you are in the EU data center, export the following environment variable: `INFISICAL_API_URL="https://eu.infisical.com"`.
-
-
 
 The structure of the directories in infisical project should match the structure of directories in the `apps` directory.   
 Let's say you want to inject the secret `DB_PASSWORD`  as environment variable for the app `immich`.
