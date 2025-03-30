@@ -28,7 +28,9 @@ write_files:
 
 runcmd:
   # Infisical
-  - curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' |  bash
+  - curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' -o /tmp/setup.deb.sh
+  - chmod +x /tmp/setup.deb.sh
+  - /tmp/setup.deb.sh
   - apt-get update
   - apt-get install -y infisical
 

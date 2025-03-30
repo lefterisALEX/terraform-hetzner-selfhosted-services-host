@@ -46,8 +46,8 @@ module "server" {
   server_type              = "cax11"
   region                   = "nbg1"
   volume_size              = 10
-  hcloud_network_id        = 10756284
-  server_ip                = "192.168.156.50"
+  hcloud_network_id        = 10842768
+  server_ip                = "10.122.0.100"
   public_access            = false
   volume_delete_protection = false
   tailscale_auth_key       = var.tailscale_auth_key
@@ -62,7 +62,7 @@ module "server" {
 
   timezone         = "Europe/Amsterdam"
   ssh_keys         = ["main"]
-  tailscale_routes = "192.168.156.50/32,172.29.0.0/16"
+  tailscale_routes = "10.122.0.100/32,172.29.0.0/16"
   custom_userdata = [
      "echo 'Custom user-data execution'",
      "mkdir /mnt/custom_data",
