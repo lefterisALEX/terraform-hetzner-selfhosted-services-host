@@ -99,7 +99,7 @@ variable "infisical_project_id" {
 
 variable "infisical_api_url" {
   type        = string
-  default     = null
+  default     = "https://app.infisical.com"
   description = "The infisical api URL. This value will be exported to INFISICAL_API_URL if set"
 }
 
