@@ -37,54 +37,27 @@ If Infisical integration is enabled:
 5. Executes the root `docker-compose.yaml` file.
 6. Regularly checks for new commits in the upstream repository. If new commits are found, it fetches the updated code and re-applies the `docker-compose.yaml`.
 
+## Requirments 
 
+Applying this module deploys a server where the containers are running in a private network in Hetzer.  
+You will need to have:
+1. A Hetzner account with a private network.
+2. A tailscale account for connecting to the services with VPN.
+3. [optional] An account with Infisical to use for external secrets.
 
-## Requirments
-1. **Generate an API Token for your Hetzner project.**  
-This will allow terraform to deploy resources in your hetzner project.  
-*more info: https://docs.hetzner.com/cloud/api/getting-started/generating-api-token/*  
-2. **(Optional) Create an Auth-Key in your Tailscale account**  
-This key will be used to connect the server to your Tailscale network.  
-*More information: [Generating a Key](https://tailscale.com/kb/1085/auth-keys#generating-a-key)*  
-3. **(Optional) Create a new Infisical machine identity to access secrets from your Infisical project.**  
-More information: https://infisical.com/docs/documentation/platform/identities/universal-auth.
-For detailed instructions on setting up Infisical secrets, please refer to the "How to setup and inject secrets from infisical" section below in this document.
-4. **(Optional) Create a GitHub Token**  
-   This token is necessary if your application repository is private.
+## Kickstart Template
 
+Although applying this module is going to deploy the VPS you will still need some more steps to steps to setup TLS certificates, configure Tailscale etc.
+[Kickstart Self-Hosted Services](https://github.com/lefterisALEX/kickstart-selfhosted-services) repository is a template that can help you kickstart your labs and configure everything all the missing parts. This repository provides a comprehensive setup for some sample self-hosted services, making it an good starting point for your deployment.
 
+You can follow the instructions outlined in the [Kickstart Self-Hosted Pages](https://lefterisalex.github.io/kickstart-selfhosted-pages). This guide will walk you through the process of:
 
-## How to setup and inject secrets from infisical 
+1. Deploying the VPS using this Terraform module.
+2. Setting up TLS certificates for secure communication.
+3. Establishing a VPN connection using Tailscale.
+4. Managing external secrets with Infisical.
 
-### Setup infisical
-
-1. Navigate to Admin > Access Control > Identities and create a new Identity. Give the `Member` role to this identity.
-1. Create a project and get the `project ID`. You will need to set it as `infisical_project_id`.
-3. In `Access Control` > `Machine Identities` of your project Assign the newly created identity as a Project Viewer.
-4. Click on Universal Auth, then click Add a `client secret`. Get the client secret and set it as `infisical_client_secret` 
-5. Get the client ID and set it as `infisical_client_id`.
-6. If you are in the EU data center, export the following environment variable: `INFISICAL_API_URL="https://eu.infisical.com"`.
-
-The structure of the directories in infisical project should match the structure of directories in the `apps` directory.   
-Let's say you want to inject the secret `DB_PASSWORD`  as environment variable for the app `immich`.
-
-1.Under `immich` directory create the key `DB_PASSWORD` with the value you want to inject to the app
-![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/be99c504-ac31-4dfd-8df1-9fe8cfcad435)
-![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/815efc22-e400-4a43-a091-bce4398eea05)
-
-2.  `Update docker-compose.yaml` to pass the content of the `.secrets` file as environment variables.
-
-![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/168247b7-944f-4b12-8918-625fa7644d43)
-
-Note:  What will happened is when you run terraform apply infisical ig going to read all secrets under each infisical project and export it under each directory with same name to a file called `.secrets`
-For example if you have under apps three directories, `immich`, `traefik` and `photoprism` the module is going to generate for each directory a file called `.secrets`  
-
-![image](https://github.com/lefterisALEX/terraform-hetzner-cloudstack/assets/24940221/c22e4d31-0239-4a28-b83a-ec8d722b4649)
-
-
-## Requirements
-
-No requirements.
+By leveraging this module and the accompanying resources, you can streamline the deployment of your self-hosted services and ensure a secure and efficient setup.
 
 ## Providers
 
