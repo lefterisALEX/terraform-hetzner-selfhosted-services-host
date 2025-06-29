@@ -28,7 +28,7 @@ write_files:
 
 runcmd:
   # Infisical
-  - curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' -o /tmp/setup.deb.sh
+  - curl -1sLf 'https://artifacts-cli.infisical.com/setup.deb.sh' -o /tmp/setup.deb.sh
   - chmod +x /tmp/setup.deb.sh
   - /tmp/setup.deb.sh
   - apt-get update
