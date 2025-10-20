@@ -25,7 +25,15 @@ write_files:
       SUBDIR_SECRETS_FILENAME=".secrets"
     permissions: '0644'
     owner: root:root
-
+%{ if docker_volume != "" ~}
+  - path: /etc/docker/daemon.json
+    content: |
+      {
+        "data-root": "/mnt/docker"
+      }
+    permissions: '0644'
+    owner: root:root
+%{ endif ~}
 runcmd:
   # Infisical
   - curl -1sLf 'https://artifacts-cli.infisical.com/setup.deb.sh' -o /tmp/setup.deb.sh
@@ -38,7 +46,12 @@ runcmd:
   - mount -o discard,defaults ${linux_device} /mnt/data
   - echo "${linux_device} /mnt/data ext4 discard,nofail,defaults 0 0" >> /etc/fstab
   
-  
+%{ if docker_volume != "" ~}
+  - mkdir  /mnt/docker
+  - mount -o discard,defaults ${docker_volume} /mnt/docker
+  - echo "${docker_volume} /mnt/docker ext4 discard,nofail,defaults 0 0" >> /etc/fstab
+%{ endif ~}
+
   # install tailscale
   - curl -fsSL https://tailscale.com/install.sh | sh
   - tailscale up --advertise-routes="${tailscale_routes}" --accept-routes --auth-key="${tailscale_auth_key}"
