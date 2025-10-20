@@ -17,17 +17,17 @@ variable "tailscale_auth_key" {
   type = string
 }
 variable "infisical_client_id" {
-  type = string
+  type      = string
   default   = ""
   sensitive = true
 }
 variable "infisical_client_secret" {
-  type = string
+  type      = string
   default   = ""
   sensitive = true
 }
 variable "infisical_project_id" {
-  type = string
+  type      = string
   default   = ""
   sensitive = true
 }
@@ -46,27 +46,28 @@ module "server" {
   server_type              = "cax11"
   region                   = "nbg1"
   volume_size              = 10
-  hcloud_network_id        = 10842768
-  server_ip                = "10.122.0.100"
+  hcloud_network_id        = 11518285
+  server_ip                = "192.168.100.10"
+  docker_volume_size       = 10
   public_access            = false
   volume_delete_protection = false
   tailscale_auth_key       = var.tailscale_auth_key
   infisical_client_id      = var.infisical_client_id
   infisical_client_secret  = var.infisical_client_secret
-  infisical_project_id     = var.infisical_project_id 
-  infisical_api_url        = "https://eu.infisical.com"   
+  infisical_project_id     = var.infisical_project_id
+  infisical_api_url        = "https://eu.infisical.com"
   github_repo_url          = "https://github.com/lefterisALEX/terraform-hetzner-cloudstack.git"
   github_token             = var.github_token
-  docker_compose_path      = "examples/basic/apps"      
+  docker_compose_path      = "examples/basic/apps"
 
 
   timezone         = "Europe/Amsterdam"
   ssh_keys         = ["main"]
   tailscale_routes = "10.122.0.100/32,172.29.0.0/16"
   custom_userdata = [
-     "echo 'Custom user-data execution'",
-     "mkdir /mnt/custom_data",
-     "apt-get install -y btop"
+    "echo 'Custom user-data execution'",
+    "mkdir /mnt/custom_data",
+    "apt-get install -y btop"
   ]
 }
 

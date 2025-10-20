@@ -1,6 +1,7 @@
 
 locals {
-  deployr_version = "0.2"
+  deployr_version   = "0.3"
+  use_docker_volume = var.docker_volume_size > 0
 }
 
 resource "hcloud_server" "this" {
@@ -15,6 +16,7 @@ resource "hcloud_server" "this" {
   user_data = templatefile("${path.module}/scripts/bootstrap.sh", {
     tailscale_auth_key      = var.tailscale_auth_key
     linux_device            = hcloud_volume.this.linux_device
+    docker_volume           = local.use_docker_volume ? hcloud_volume.docker-volume[0].linux_device : ""
     tailscale_routes        = var.tailscale_routes
     timezone                = var.timezone
     apps_repository_url     = format("https://%s@%s", var.github_token, replace(var.github_repo_url, "https://", ""))
@@ -59,4 +61,23 @@ resource "hcloud_volume_attachment" "this" {
   automount = false
 }
 
+
+resource "hcloud_volume" "docker-volume" {
+  count = local.use_docker_volume ? 1 : 0
+
+  name              = "${var.name}-docker"
+  size              = var.docker_volume_size
+  location          = var.region
+  automount         = false
+  format            = "ext4"
+  delete_protection = var.docker_volume_delete_protection
+}
+
+resource "hcloud_volume_attachment" "docker-volume" {
+  count = local.use_docker_volume ? 1 : 0
+
+  volume_id = hcloud_volume.docker-volume[0].id
+  server_id = hcloud_server.this.id
+  automount = false
+}
 

@@ -24,7 +24,7 @@ variable "region" {
 }
 
 variable "hcloud_network_id" {
-  type = number
+  type        = number
   description = "The network ID from your private network"
 }
 
@@ -57,6 +57,19 @@ variable "volume_delete_protection" {
   type        = bool
   description = "If set to true is going to protect volume from deletion."
 }
+
+variable "docker_volume_size" {
+  default     = "0"
+  type        = number
+  description = "The size of the volume which will be attached to the server"
+}
+
+variable "docker_volume_delete_protection" {
+  default     = false
+  type        = bool
+  description = "If set to true is going to protect volume from deletion."
+}
+
 
 variable "timezone" {
   default     = "Europe/Amsterdam"
@@ -124,7 +137,7 @@ variable "docker_compose_path" {
 variable "custom_userdata" {
   description = "Extra commands to be executed in cloud-init"
   type        = list(string)
-  default     = [
+  default = [
     "echo 'Default user-data execution'"
   ]
 }
